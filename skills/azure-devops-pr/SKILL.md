@@ -1,11 +1,12 @@
 ---
 name: azure-devops-pr
 description: >
-  USE THIS SKILL for any Azure DevOps pull-request interaction: fetch, read, address, or
+  USE THIS SKILL for any Azure DevOps pull-request interaction: create a PR; fetch, read, address, or
   reply to PR review comments and threads; resolve a thread; turn review feedback into a
   tracked follow-up work item; or set auto-complete on a PR. Triggers on "fetch pr
   comments", "address pr comments", "reply to review comments", "address review feedback",
-  "follow up on that comment", "set auto-complete", "enable auto-complete".
+  "follow up on that comment", "set auto-complete", "enable auto-complete", "create a PR",
+  "open a pull request".
   Azure DevOps only — see the platform note for GitHub and GitLab.
 args:
   - name: pr_id
@@ -16,7 +17,7 @@ args:
 # Azure DevOps Pull Requests
 
 Everything this library does against a PR *host* — as opposed to against the code — lives
-here: review threads, replies, follow-up work items, and auto-complete.
+here: creating the PR, review threads, replies, follow-up work items, and auto-complete.
 
 > **Platform:** Azure DevOps, via the `az` CLI. The workflows generalise but the commands do
 > not: GitHub has no thread-status model and no work-item hierarchy, so `follow-up-thread`
@@ -42,6 +43,27 @@ with access to the project. Every script takes an optional PR id and falls back 
 active PR for the current branch.
 
 ## Operations
+
+### Create the PR
+
+```bash
+scripts/create-pr.sh [--title "..."] [--description "..."] [--target-branch main] [--work-items "8198 8201"]
+```
+
+Push the branch first. Squash merge is set at creation. A work item is linked from a
+trailing `-<id>` or `/<id>` in the branch name when none is passed; if there is none, the PR
+is created unlinked.
+
+**Compose the title yourself unless the branch is one commit ahead.** The script uses a
+single commit's subject, and refuses otherwise — no one commit's subject describes a
+multi-commit change. Read `git log origin/<target>..HEAD`, the diff and the linked work
+item (`az boards work-item show --id <id>`), then write one title in the project's
+commit-message convention: it becomes the squash commit through `auto-complete-pr.sh`.
+
+**Offer, don't impose, a diagram.** For a change whose shape is easier seen than read — a
+new control flow, a new interaction between services — offer to sketch a small Mermaid
+diagram for the description. Azure DevOps PR descriptions do not render Mermaid, so render
+it to PNG (`mmdc`) and attach it rather than pasting the source.
 
 ### Read the review threads
 

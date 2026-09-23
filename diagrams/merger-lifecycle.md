@@ -5,8 +5,9 @@ merged".
 
 ## Setup
 
-Runs once. The only interesting part is that a rejected push means the base branch moved,
-which is a rebase, which can end in a conflict the agent should not guess at.
+Runs once. The interesting parts: a rejected push means the base branch moved, which is a
+rebase, which can end in a conflict the agent should not guess at; and a branch with no PR
+gets one, with a title written for the whole change rather than copied from the last commit.
 
 ```mermaid
 flowchart LR
@@ -19,7 +20,11 @@ flowchart LR
     CONF -->|textual| FIX[Resolve, re-run tests]
     FIX --> PUSH
     CONF -->|semantic| HUMAN([Ask the user])
-    ID --> AUTO[Enable auto-merge, squash]
+    ID --> HAS{PR exists?}
+    HAS -->|no| CREATE[Create PR<br/>compose title if &gt;1 commit]
+    CREATE --> SUGG[Suggest local reviewers, once]
+    SUGG --> AUTO
+    HAS -->|yes| AUTO[Enable auto-merge, squash]
     AUTO --> LOOP([Enter monitor loop])
 
     classDef fix fill:#fff4e6,stroke:#d9822b

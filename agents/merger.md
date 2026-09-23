@@ -18,7 +18,7 @@ and escalate.
 > **Platform note:** commands below use GitHub's `gh` CLI. The logic is platform-agnostic —
 > for GitLab substitute `glab mr ...`, for Azure DevOps use the
 > [`azure-devops-pr`](../skills/azure-devops-pr/SKILL.md) skill, which wraps the same
-> operations (`az repos pr ...`) as scripts. Replace
+> operations (`az repos pr ...`) as scripts, PR creation included. Replace
 > the test/lint commands (`<run tests>`, `<run linters>`) with your project's equivalents
 > (e.g. `pytest`, `npm test`, `mvn verify`, `go test ./...`). The default base branch here is
 > `main`; change it to match your project (`develop`, `next`, …).
@@ -38,23 +38,48 @@ git push origin HEAD
 
 If the push is rejected (non-fast-forward), perform a rebase — see §6.
 
-### 2. Resolve PR ID
+### 2. Resolve or create the PR
 
-If no PR ID was given, find the active PR for the current branch:
+If no PR ID was given, find the active PR for the current branch — and if there is none,
+create it rather than stopping:
 
 ```bash
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 if [[ -z "${PR_ID:-}" ]]; then
     PR_ID=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number') || true
-    if [[ -z "$PR_ID" || "$PR_ID" == "null" ]]; then
-        echo "No active PR found for branch '$BRANCH' — create one first." >&2
-        exit 1
+fi
+
+if [[ -z "${PR_ID:-}" || "$PR_ID" == "null" ]]; then
+    if [[ "$(git rev-list --count origin/main..HEAD)" == "1" ]]; then
+        gh pr create --base main --fill
+    else
+        gh pr create --base main --title "$TITLE" --body "$BODY"
     fi
+    PR_ID=$(gh pr view --json number --jq .number)
 fi
 ```
 
 `BRANCH` is always derived first so it is defined even when `PR_ID` is passed explicitly.
+
+**The title is the one step not to delegate.** With a single commit, its subject is the
+title. With more, no one commit's subject describes the change: compose `$TITLE` from the
+whole of `git log origin/main..HEAD`, the diff and the linked issue, in the project's
+commit-message convention — the squash merge turns it into the commit on `main`. `$BODY`
+follows [`feature-workflow.md`](../docs/feature-workflow.md) step 8 when the change is a
+feature. Never fall back to a title-less create and treat a failure as "nothing to do".
+
+### 2a. Suggest the local reviewers, once
+
+If this run created the PR, or pushed a fresh commit since it started, tell the user once:
+
+> "PR #{pr_id}: consider running the review skills locally now (`review-pr`,
+> `review-complexity`, `review-testing`, and whichever focused lenses fit) — faster
+> feedback than waiting for CI or a human."
+
+At most **once per PR per run**, tracked in the agent's own state, not in git. It is
+advisory: do not wait for an answer, and do not launch the reviewers yourself — they are a
+developer-facing step, not part of the merge lifecycle.
 
 ### 3. Enable auto-merge
 
@@ -72,6 +97,13 @@ one-line summary of the current state, e.g.:
 - `"Fixing CI failure — test failure in test_variant_response_handler"`
 - `"Addressing review comment — thread by Johan"`
 - `"Waiting for human approval — all checks pass"`
+
+Also print a structured status line on each iteration, so a log or a supervising agent can
+follow the run without parsing prose:
+
+```
+[merger] iteration=N status=<state> pr=<id> elapsed=<Xs since last change> detail=<what you're doing or waiting on>
+```
 
 Reset the "elapsed since last change" timer whenever the state changes (CI transitions,
 comment addressed, push made, etc.).
@@ -243,6 +275,7 @@ gh pr merge "$PR_ID" --auto --squash   # re-enable in case the force-push cleare
 
 | Situation | Action |
 |---|---|
+| No PR for the branch | Create it (§2), composing the title if more than one commit |
 | PR merged | Report success, exit |
 | CI running | Sleep 60s, loop back — **do not exit** |
 | CI failed | Fix code, push, re-enable auto-merge |
