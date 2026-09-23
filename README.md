@@ -57,6 +57,7 @@ in docs, config, CI or deploy plumbing, where the other lenses have little to sa
 | [`adapter-contract-testing`](skills/adapter-contract-testing/SKILL.md) | Hold a fake and its real adapter to one shared contract, so the fake cannot drift. |
 | [`bugszero-root-cause`](skills/bugszero-root-cause/SKILL.md) | Fix a bug by removing the design weakness that allowed it, not just the symptom. |
 | [`legacy-3p`](skills/legacy-3p/SKILL.md) | Change legacy code in order: Protect with characterization tests, Prepare by refactoring, Produce with TDD. |
+| [`review-drift`](skills/review-drift/SKILL.md) | After merges, what the *rest* of the codebase now owes: duplication, an idea that should spread, a rule stated but unapplied. Nightly runner and GitHub issue publisher included; CodeScene optional. |
 | [`quality-gate`](skills/quality-gate/SKILL.md) | Objective thresholds as a backstop for when review nudges don't land. Final CI stage, Claude Code hook, or both. |
 | [`azure-devops-pr`](skills/azure-devops-pr/SKILL.md) | **Azure DevOps only.** Create a PR; review threads, replies, follow-up work items, auto-complete. Ships its own scripts. |
 

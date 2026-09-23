@@ -59,8 +59,14 @@ implementation of the PR-host operations it needs.
 they are pointed at. [`skills/quality-gate`](skills/quality-gate/SKILL.md) is what runs when
 the nudges do not land — objective thresholds against the codebase as it stands, last in
 CI, catching the drift that accumulates when every individual review was right to pass.
-It is the only thing here that reads the code rather than the diff, and the only thing that
-cannot be reasoned with.
+It is the only thing here that cannot be reasoned with.
+
+**Beyond the diff.** [`skills/review-drift`](skills/review-drift/SKILL.md) sits between the
+two: judgement like a reviewer, but over the whole codebase rather than a diff. After
+merges land it asks what the rest of the code now owes — the new type still missing
+elsewhere, the third workaround for one root cause, the rule written down and applied once
+— and files what it finds as issues. The gate sees that a file got too big; the drift
+review sees why, and where else the same thing is happening.
 
 ## Conventions for content
 

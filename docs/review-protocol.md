@@ -182,3 +182,7 @@ focused passes find more than the catch-all does — they are cheap to run in pa
 `review-impact` is the one to run *before* pushing rather than after. `review-slop` earns
 its place on a diff heavy in docs, config, CI or deploy plumbing, where the other lenses
 have little to say.
+
+What no reviewer here can see is a consequence outside the diff that nobody touched —
+[`review-drift`](../skills/review-drift/SKILL.md) runs after merges for that, and does not
+use this protocol.

@@ -74,6 +74,8 @@ flowchart TD
 
     DRIFT ==>|"every review was right,<br/>the file is now 400 lines"| QG[quality-gate<br/>thresholds, on the codebase]
     QG --> BLOCK([Build fails])
+    DRIFT ==>|"after merges: what does<br/>the rest now owe?"| RD[review-drift<br/>judgment, on the codebase]
+    RD --> ISSUES([Issues, ranked by leverage])
 
     classDef backstop fill:#fdecea,stroke:#c62828,stroke-width:2px
     class QG,BLOCK backstop
@@ -83,6 +85,11 @@ The loop on the left is the normal case and it is not a failure — most "fine i
 judgements really are fine. But nothing in that loop can see the fourteenth reasonable
 increment, because each review only ever sees one. The gate reads the file rather than the
 diff, so it sees the total; that is the only thing it is better at, and it is enough.
+
+`review-drift` reads the codebase too, but with judgement: it starts from what recently
+landed and looks for the consequences outside the diff — the sibling that did not get the
+new type, the rule written down and applied in one place. The gate says a file is too big;
+the drift review says why, and where else.
 
 A gate that fires is therefore evidence about the loop as much as about the file. If the
 same file trips it every release, the reviewers have been raising it and nobody has been
