@@ -45,7 +45,11 @@ risk the no-mocks rule creates — a fake that has drifted from what it stands i
 bug is the second of its kind. [`agents/refactor`](agents/refactor.md) restructures without
 changing behaviour, guided by
 [`docs/accidental-complexity-guide.md`](docs/accidental-complexity-guide.md) and
-[`docs/design-patterns.md`](docs/design-patterns.md).
+[`docs/design-patterns.md`](docs/design-patterns.md). The target shape both workflows and
+the refactor agent aim at is stated in [`docs/code-design-rules.md`](docs/code-design-rules.md)
+(inside a type or function) and
+[`docs/hexagonal-architecture-rules.md`](docs/hexagonal-architecture-rules.md) (where code
+goes).
 
 **Landing it.** [`agents/merger`](agents/merger.md) owns the merge lifecycle.
 [`skills/azure-devops-pr`](skills/azure-devops-pr/SKILL.md) is the Azure DevOps

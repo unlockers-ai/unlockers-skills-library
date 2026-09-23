@@ -22,8 +22,12 @@ right place, and can this be extended without infrastructure leaking into the do
 Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 3–5 (*Map the dependency direction*, *Apply the architecture lens*, *Check the seams*) below.
 
 **Also read:** the project's conventions doc (`AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`
-— whichever exists) and [`docs/design-patterns.md`](../../docs/design-patterns.md). If the
-project keeps ADRs or design specs, check whether an active one constrains the touched area.
+— whichever exists), [`docs/design-patterns.md`](../../docs/design-patterns.md) and
+[`docs/hexagonal-architecture-rules.md`](../../docs/hexagonal-architecture-rules.md) — the
+latter only where the codebase is actually hexagonal (see step 2), and often only for part
+of it: one-shot scripts and static-site builds reviewed against the hexagon produce
+findings nobody will act on. If the project keeps ADRs or design specs, check whether an
+active one constrains the touched area.
 
 ## Process
 
@@ -61,6 +65,14 @@ project keeps ADRs or design specs, check whether an active one constrains the t
    - Behaviour that obviously belongs on an entity pushed into a service (anaemic model)
    - Config object threaded through many layers instead of injecting the resolved value
    - New public API duplicating an abstraction that already exists nearby
+   - Multiple side effects with no transaction and no stated decision to go without one —
+     ask what state is left behind when the second write fails after the first succeeded
+   - Controller doing more than a few lines of work instead of delegating to a use case
+   - A use case interleaving reads, decisions and writes past the signals in
+     [`hexagonal-architecture-rules.md`](../../docs/hexagonal-architecture-rules.md) rule 2
+     — three functional cases, a second catch, a second read-port or write-port call
+   - An adapter reading an inbound payload field by field (`.get("status")`) where the
+     provider publishes a schema — rule 5
 
    **Minor** (alignment):
    - Module in the wrong folder for what it actually is (adapter living under services)
@@ -79,7 +91,7 @@ project keeps ADRs or design specs, check whether an active one constrains the t
 | Severity | Indicators |
 |----------|------------|
 | Critical | Hard boundary violation; direct infrastructure call in domain; abstraction bypassed |
-| Major | Missing seam or port; optional collaborator; god class; cross-context leakage; config tunnelling |
+| Major | Missing seam or port; optional collaborator; god class; cross-context leakage; config tunnelling; untransacted multiple side effects; deciding and applying interleaved |
 | Minor | Misplaced module; naming drift; missing export |
 
 ## Output Format

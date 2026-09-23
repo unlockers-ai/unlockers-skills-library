@@ -21,7 +21,10 @@ doesn't serve the domain problem.
 ## Reference
 
 See [`docs/accidental-complexity-guide.md`](../../docs/accidental-complexity-guide.md) for
-the full smell catalogue with examples and detection heuristics.
+the full smell catalogue with examples, detection heuristics, and the linter rules that
+measure each smell, and [`docs/code-design-rules.md`](../../docs/code-design-rules.md) for
+the shape a suggestion should point at — a missing value object or a missing
+behaviour-bearing type is behind more of these smells than any other single cause.
 
 **Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
 Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 2–3 (*Apply the complexity lens*, *Challenge each finding*) below.
@@ -46,7 +49,11 @@ Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 2�
    - Always-null optional arguments
    - Emptiness guards around already-safe collection operations
    - Middle-man classes that just delegate
-   - God objects / classes doing too much
+   - God objects / classes doing too much — linters and CodeScene for the screen, then the
+     method × attribute matrix (guide §10) for what is inside;
+     [`scripts/class_cohesion.py`](scripts/class_cohesion.py) computes it for Python
+   - Long functions — the longest function the protocol's § 2 listed, against
+     [`code-design-rules.md`](../../docs/code-design-rules.md) rule 4
 
    **Minor** (code smells):
    - Long parameter lists (>4 params)

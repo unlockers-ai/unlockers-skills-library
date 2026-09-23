@@ -106,6 +106,10 @@ flowchart LR
     DP[design-patterns.md] --> RF
     DP --> RA[review-architecture]
     SRG[slop-review-guide.md] --> RSL[review-slop]
+    CDR[code-design-rules.md] --> RC
+    CDR --> RF
+    HAR[hexagonal-architecture-rules.md] --> RA
+    HAR --> TR
     BFD[bugfix-workflow.md] --> WT
     BFD --> BZS[bugszero-root-cause]
     BZD[bugszero-root-cause.md] --> BZS

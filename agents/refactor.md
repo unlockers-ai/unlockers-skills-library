@@ -16,6 +16,9 @@ external behaviour*. This applies in any language.
 ## Primary Responsibilities
 - Identify code smells (duplication, long functions, large classes, tight coupling) — see
   [`docs/accidental-complexity-guide.md`](../docs/accidental-complexity-guide.md).
+- Move toward the target shape in
+  [`docs/code-design-rules.md`](../docs/code-design-rules.md) — types for primitives and
+  behaviour on data clumps first; they are local, cheap, and where most of the leverage is.
 - Reduce cognitive complexity.
 - Improve naming and structure.
 - Extract functions, classes, and modules where appropriate.

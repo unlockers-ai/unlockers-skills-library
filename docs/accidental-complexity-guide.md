@@ -177,6 +177,10 @@ everything.
 
 ### 2. Exception Handling Complexity (Critical Priority)
 
+> **The default strategy is to not catch at all** — let the exception reach the top and be
+> turned into an error there. Everything below is about the cases that deviate from it. See
+> [`code-design-rules.md`](code-design-rules.md) rule 3.
+
 #### 2.1 Multi-Layer Exception Handling
 
 **Smell:** The same exception is caught at multiple layers (adapter → service → controller).
@@ -268,6 +272,17 @@ except SpecificNetworkError as e:
 **Why it's bad:** Adds a try/catch block that does nothing useful. If you're not
 translating or enriching, don't catch.
 
+#### 2.4 A Catch Standing In for a Missing Type
+
+**Smell:** the exception is thrown deep in the domain because an illegal value got that far,
+and a `try` is added where it surfaces.
+
+**Why it's bad:** it treats a construction-time problem as a runtime one, at every site that
+handles the value rather than the one that creates it.
+
+**Good:** reject the value in its own type instead — see
+[`code-design-rules.md`](code-design-rules.md) rules 1 and 3.
+
 ---
 
 ## General Code Smells
@@ -337,6 +352,10 @@ def create_order(request: OrderRequest) -> Order:
 
 ### 5. Primitive Obsession
 
+> Minor as a *review finding*, first as a *refactoring move* — see
+> [`code-design-rules.md`](code-design-rules.md) rule 1 for why this and §6 are what to
+> reach for before anything structural.
+
 **Smell:** Using primitive types (str, int) for domain concepts.
 
 **Why it's bad:** No type safety, no place for behaviour, easy to mix up parameters of the
@@ -367,9 +386,18 @@ def transfer(source: AccountId, destination: AccountId, amount: Money) -> None:
 
 ### 6. Data Clumps
 
+> The positive version of this — where the type lives, and why it is immutable — is
+> [`code-design-rules.md`](code-design-rules.md) rule 2.
+
 **Smell:** The same group of parameters/fields appears together in multiple places.
 
 **Why it's bad:** Signals a missing abstraction. Changes require updating multiple places.
+
+**Detection:** two shapes hide from a per-function read and need the whole file:
+- the same tuple of arguments threaded down a call chain unchanged, from a dispatcher
+  through helpers to a builder, even when every signature on the way is short;
+- several small dataclasses in one module whose leading fields are identical — the clump
+  has been written once per variant and named in none of them.
 
 **Bad:**
 ```python
@@ -407,7 +435,12 @@ business logic to justify the service layer.
 other class.
 
 **Detection:** methods with many `other_object.field` accesses; chained access like
-`self.order.customer.address.city`.
+`self.order.customer.address.city`. Also — and this is where it hides best — the
+module-level private function whose parameters are all one type we own, or that reads
+several fields of one such type: that is a method the type is missing. List a module's
+free functions with their parameter types; the ones that take a single domain object
+belong on it. A function that receives a value *and* an object already carrying that
+value is the same smell with a bug attached.
 
 **Good:** move the behaviour onto the class that owns the data
 (`order.customer.format_shipping_label()`).
@@ -427,9 +460,40 @@ always passed the same value; code paths never executed.
 
 **Smell:** Classes with many responsibilities, methods, and fields.
 
-**Detection:** >10 public methods, >5 dependencies, file size >300 lines.
+**Detection:** >10 public methods, >5 dependencies, file size >300 lines — as a screen.
+Those counts say "look here"; they do not say what is inside. Get the screen from the
+tools (`pylint` R0902 counts every `self.x` set in `__init__`, private ones included;
+R0904 counts *public* methods only; CodeScene flags a constructor over 5 arguments), then
+look inside with the **method × attribute usage matrix**, which no shipped tool computes:
 
-**Refactoring:** extract cohesive groups of methods into separate classes.
+1. `A` = the attributes assigned on `self` in `__init__`; `M` = the methods, `__init__`
+   excluded. Members = `|A| + |M|`; past about six, expect the matrix to show blocks.
+2. Fill `U[m][a] = 1` when method `m` reads or writes `self.a` directly (AST:
+   `Attribute(value=Name("self"), attr=a)`). Direct use only — a method that reaches an
+   attribute solely by calling another method is dispatch, and shows up as an empty row.
+3. Read off, in this order:
+   - **TCC** = share of method pairs that touch at least one common attribute. Below
+     about 0.3 the class is several classes. (Do not use LCOM4 / connected components
+     alone: one attribute everybody touches, or self-calls, glue the graph into one
+     component and hide everything — which is why CodeScene's cohesion check and the
+     `cohesion` package can both stay silent on a class the matrix splits in five.)
+   - **Sole-touched attributes**: an attribute used by exactly one method is a
+     dependency that belongs to that method, not the class.
+   - **Empty rows**: methods touching no attribute — pure dispatch or a free function.
+   - **Blocks**: remove the plumbing attributes (a clock, a logger, the one repository
+     everyone reads) and recompute the components of the "shares an attribute" graph.
+     What remains connected is a candidate class, and its column set is that class's
+     constructor.
+
+For Python, [`skills/review-complexity/scripts/class_cohesion.py`](../skills/review-complexity/scripts/class_cohesion.py)
+`FILE [CLASS] [--plumbing a,b]` prints the matrix and the four readings, if you would
+rather not walk the AST yourself.
+
+The numbers inform the assessment; they do not make it. A class can score badly on TCC
+and be the right shape (a façade over ports is one), so say what the split would buy
+before proposing it.
+
+**Refactoring:** extract cohesive groups of methods into separate classes — the blocks.
 
 ### 11. Unnecessary State
 
@@ -598,6 +662,19 @@ class Order:
         self.status = OrderStatus.CANCELLED
 ```
 
+### 19. Long Functions
+
+**Smell:** a function past ~30 lines, usually doing more than one job.
+
+**Why it's bad:** hard to read as a whole, hard to test in isolation, hard to change
+without touching unrelated logic.
+
+**Detection:** distance between one function definition and the next.
+
+**Good:** no single fix — extracting a helper is often enough; on a use case or a service,
+separating deciding from applying is the one worth reaching for first. See
+[`code-design-rules.md`](code-design-rules.md) rule 4.
+
 ---
 
 ## Severity Model
@@ -605,8 +682,53 @@ class Order:
 | Severity | Indicators |
 |----------|------------|
 | Critical | Null checks in domain logic, emptiness guards before operations that are already safe on empty, optional params never used as null, exception handling masking design flaws |
-| Major | Multi-layer try/catch, boolean flags splitting behaviour, unnecessary delegation, feature envy, god objects |
+| Major | Multi-layer try/catch, boolean flags splitting behaviour, unnecessary delegation, feature envy, god objects, long functions |
 | Minor | Long param lists, speculative generality, unnecessary state, primitive obsession, nested conditionals |
+
+## Tools That Measure These
+
+Before writing an AST walker, check this table: a shipped rule is more precise than the
+one you would write in the next ten minutes (it already knows that a private attribute
+is still an attribute, that a keyword-only argument still counts, that `async def` is a
+method). Use its output to *inform* the finding and the trade-off, not to decide it —
+and say which tool and which threshold the number came from. CodeScene, where you have it,
+is reachable through its MCP server (`code_health_review` on one file). These are dev
+tools: installing another one is cheap and always allowed. Hand-rolling what one of them
+already does is the expensive option.
+
+The rule codes are Python's, like the examples. Other ecosystems have the same rules under
+other names — PMD and Checkstyle, ESLint and SonarJS, detekt, golangci-lint; CodeScene,
+`lizard` and `jscpd` are language-agnostic. Find the equivalent before reaching for a
+script.
+
+| Smell (§) | Tool and rule | Trap / note |
+|---|---|---|
+| 1.1–1.2 null checks, optional never null | `pyright` `reportUnnecessaryComparison`; `mypy --warn-unreachable` | Only as good as the annotations: an untyped parameter hides both. |
+| 1.3 defensive null returns | `pyright` `reportOptionalMemberAccess` on the callers | Finds the cost (every caller guards), not the cause. |
+| 2.1 multi-layer catches | `ruff` TRY201 (re-raise without `from`), `pylint` W0706 (handler that only raises), `pylint.extensions.broad_try_clause` W0717 | Nothing counts catches per call chain; grep `except` per module and read. |
+| 2.2 broad except | `ruff` BLE001; `pylint` W0718 | Both accept a broad catch that re-raises; that is still worth a look. |
+| 3 boolean flag parameter | `ruff` FBT001 / FBT002 | FBT002 is the default-valued one — the flag that "splits behaviour". |
+| 4 long parameter list | `ruff` PLR0913 (5), PLR0917 positional; `pylint` R0913 / R0917; CodeScene `function_max_arguments` 4, `constructor_max_arguments` 5 | A dataclass `__init__` is exempt in ruff, not in CodeScene. |
+| 5 primitive obsession | CodeScene `file_primitive_obsession_percentage_for_warning` 30; `ruff` PLR2004 magic values | The percentage is of *arguments* typed as primitives; a `str` slug that is really a credential scores the same as a name. |
+| 6 data clumps | none | Read the signatures of a module together; CodeScene's argument-count rules are the nearest proxy. |
+| 7 middle man | none | `pylint` R0903 lists classes with few public methods — a starting list, mostly false positives. |
+| 8 feature envy | `ruff` PLR6301 (`--preview`) / `pylint.extensions.no_self_use` R6301: a method that never touches `self` | Only catches the extreme case. A module-level `_helper(record)` is not a method at all, so no tool sees it — list the free functions and their parameter types by hand. |
+| 9 speculative generality | `vulture --min-confidence 100`; `ruff` ARG001 / ARG002; `pylint` W0613 | Unused *parameters* are the cheap tell; unused *branches* need a reader. |
+| 10 god object | `pylint` R0902 (attributes, private included), R0904 (public methods only); CodeScene constructor over-injection; then the matrix above | `wemake` WPS230 and the `cohesion` package count public members / `def` only — both under-count here, where everything is private and async. |
+| 11 unnecessary state | `pylint` R0903 inverted: a class with state and one public method | Judgement call; no tool. |
+| 12 nested conditionals | `ruff` PLR1702 (`--preview`), SIM102; `pylint` R1702; CodeScene bumpy road, `function_nesting_depth_warning` 4 | CodeScene's "bumpy road" (two nested blocks in one function) fires earlier than the depth rules. |
+| 13 temporary field | `pylint` W0201 attribute-defined-outside-init | Catches the attribute set in one method only. The dataclass whose fields are `None` per variant is the same smell and no tool sees it; see §6. |
+| 14 mutable default | `ruff` B006; `pylint` W0102 | Solved; no judgement needed. |
+| 15 inappropriate intimacy | `pylint` W0212 protected-access | Precise: `other._field` from outside the class. |
+| 16 abstraction levels | none | Read. Cognitive complexity (`flake8-cognitive-complexity` CCR001, if installed) is a weak proxy. |
+| 17 dead code | `vulture --min-confidence 100` | Never lower the threshold: below 100, vulture guesses, and a deletion made on a guess is the one that breaks a dynamic lookup. |
+| 18 anemic model | `pylint` R0903 as a *list* of data holders | Then ask which service methods only read their fields. |
+| 19 long function | `ruff` PLR0915, C901 (9); `pylint` R0915, `pylint.extensions.mccabe` R1260; `radon cc -n B`; `lizard` NLOC/CCN; CodeScene `function_lines_of_code_warning` 70, `function_cyclomatic_complexity_warning` 9 | A linear chain of early-return gates scores high on every one of these and may still be the right shape. |
+| duplication | `npx jscpd@4`; `pylint` R0801; CodeScene `function_duplication_min_similarity_percentage` 75 | jscpd counts token runs and will match two field lists in the same order. |
+
+What none of them see: the shape of a module (which helpers belong on which type, which
+tuple is threaded through a call chain, whether one class is two programs). That is
+where an agent hand-rolls a script, and should — after the table has said what it can.
 
 ## Detection Cheat Sheet
 

@@ -73,6 +73,8 @@ in docs, config, CI or deploy plumbing, where the other lenses have little to sa
 | [`bugszero-root-cause.md`](docs/bugszero-root-cause.md) | `bugszero-root-cause` |
 | [`3p-protect-prepare-produce.md`](docs/3p-protect-prepare-produce.md) | `legacy-3p` |
 | [`feature-workflow.md`](docs/feature-workflow.md) | feature development |
+| [`code-design-rules.md`](docs/code-design-rules.md) | `review-pr`, `review-complexity`, `refactor`, feature workflow |
+| [`hexagonal-architecture-rules.md`](docs/hexagonal-architecture-rules.md) | `review-architecture`, `review-pr`, testing rules, feature workflow |
 | [`design-patterns.md`](docs/design-patterns.md) | `refactor`, `review-architecture` |
 | [`slop-review-guide.md`](docs/slop-review-guide.md) | `review-slop` |
 

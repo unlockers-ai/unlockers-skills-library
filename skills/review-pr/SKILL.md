@@ -22,6 +22,13 @@ passes, also run [`review-complexity`](../review-complexity/SKILL.md) and
 **Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
 Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are step 2 (*Analyze changes*) below.
 
+**Standards to review against**, so a finding cites a rule rather than a preference:
+[`code-design-rules.md`](../../docs/code-design-rules.md) (types and exceptions),
+[`hexagonal-architecture-rules.md`](../../docs/hexagonal-architecture-rules.md) (where code
+goes — only where the codebase is actually hexagonal), [`testing-rules.md`](../../docs/testing-rules.md)
+(what a test must look like), and the project's conventions doc for what it has already
+decided on purpose.
+
 ## Process
 
 1. **Resolve refs and gather the diff** — per [`review-protocol.md`](../../docs/review-protocol.md).

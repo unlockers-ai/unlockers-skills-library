@@ -76,3 +76,7 @@ async def _resolve_routing(repo, ws_id, tracked, policy):
 Any time a function calls an impure helper (async, side-effecting, I/O) more than once for
 the same underlying data, or when a helper hides an I/O call that only exists to support a
 decision made at the call site.
+
+In a use case, this is not an optional pattern but the mechanics of a rule:
+[`hexagonal-architecture-rules.md`](hexagonal-architecture-rules.md) rule 2 says when to
+split deciding from applying, and lists the signals that say it is time.
