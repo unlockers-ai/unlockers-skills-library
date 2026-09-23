@@ -8,6 +8,9 @@ args:
   - name: base_ref
     description: Base branch to compare against (default: main)
     required: false
+  - name: report_path
+    description: "Path the report must be written to, when a caller pins it (default: reviews/impact-analysis.md)"
+    required: false
 ---
 
 # Impact Analysis Skill
@@ -18,7 +21,8 @@ wrong, and which suites must pass before pushing?
 Unlike the other reviewers, this one is most useful **before** you push, not after. It
 answers "what did I just put at risk", and its output is a list of commands to run.
 
-**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, severity levels, report shape. Read it first.
+**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
+Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 2–7 — every changed path bucketed, every modified symbol traced below.
 
 > **Adapt to your repo.** This skill assumes a multi-package repo — shared packages that
 > several deployables depend on. Substitute your own layout for `<shared>/` and `<app>/`,
@@ -71,7 +75,7 @@ answers "what did I just put at risk", and its output is a list of commands to r
 7. **Recommend verification.** Concrete, copy-pasteable commands, one per impacted package.
    The point of the report is this list.
 
-8. **Generate report** → `impact-analysis.md`
+8. **Confirm § 4 of the protocol is satisfied**, then **generate report** → `reviews/impact-analysis.md`
 
 ## Severity Model
 

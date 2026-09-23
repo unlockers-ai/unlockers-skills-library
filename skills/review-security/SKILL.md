@@ -8,6 +8,9 @@ args:
   - name: base_ref
     description: Base branch to compare against (default: main)
     required: false
+  - name: report_path
+    description: "Path the report must be written to, when a caller pins it (default: reviews/security-review-issues.md)"
+    required: false
 ---
 
 # Security Review Skill
@@ -18,7 +21,8 @@ diff. Examples below are Python; the vectors are not.
 **Scope:** application code. Infrastructure and network hardening are out of scope unless
 the diff touches deployment configuration.
 
-**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, severity levels, report shape. Read it first.
+**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
+Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 2–4 (*Find the trust boundaries*, *Apply the security lens*, *Check dependencies*) below.
 
 ## Process
 
@@ -70,7 +74,7 @@ the diff touches deployment configuration.
    flag anything known-vulnerable, abandoned, or pulled from an unexpected index. Suggest
    running the ecosystem's audit tool (`pip-audit`, `npm audit`, `cargo audit`, …).
 
-5. **Generate report** → `security-review-issues.md`
+5. **Confirm § 4 of the protocol is satisfied**, then **generate report** → `reviews/security-review-issues.md`
 
 ## Severity Model
 

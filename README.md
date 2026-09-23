@@ -31,18 +31,19 @@ docs/        Reference documentation that the skills and agents point to
 
 ### Review skills
 
-All six share one contract — arguments, ref resolution, severity levels, report shape —
+All six share one contract — arguments, ref resolution, exhaustiveness, severity levels,
+report shape —
 documented once in [`docs/review-protocol.md`](docs/review-protocol.md). Each skill below
 adds a single lens. They are read-only: they report, they do not fix.
 
 | Skill | Lens | Report |
 |-------|------|--------|
-| [`review-pr`](skills/review-pr/SKILL.md) | Catch-all: bugs, design, security, coverage in one pass | `code-review-issues.md` |
-| [`review-complexity`](skills/review-complexity/SKILL.md) | Accidental complexity — defensive checks, redundant exception handling, over-engineering | `complexity-review-issues.md` |
-| [`review-testing`](skills/review-testing/SKILL.md) | Test quality and coverage | `testing-review-issues.md` |
-| [`review-architecture`](skills/review-architecture/SKILL.md) | Boundaries, seams, dependency direction | `architecture-review-issues.md` |
-| [`review-security`](skills/review-security/SKILL.md) | Secrets, injection, authz, crypto, dependencies | `security-review-issues.md` |
-| [`review-impact`](skills/review-impact/SKILL.md) | Blast radius; which suites must pass — run this *before* pushing | `impact-analysis.md` |
+| [`review-pr`](skills/review-pr/SKILL.md) | Catch-all: bugs, design, security, coverage in one pass | `reviews/code-review-issues.md` |
+| [`review-complexity`](skills/review-complexity/SKILL.md) | Accidental complexity — defensive checks, redundant exception handling, over-engineering | `reviews/complexity-review-issues.md` |
+| [`review-testing`](skills/review-testing/SKILL.md) | Test quality and coverage | `reviews/testing-review-issues.md` |
+| [`review-architecture`](skills/review-architecture/SKILL.md) | Boundaries, seams, dependency direction | `reviews/architecture-review-issues.md` |
+| [`review-security`](skills/review-security/SKILL.md) | Secrets, injection, authz, crypto, dependencies | `reviews/security-review-issues.md` |
+| [`review-impact`](skills/review-impact/SKILL.md) | Blast radius; which suites must pass — run this *before* pushing | `reviews/impact-analysis.md` |
 
 `review-pr` alone is enough for a small change. For anything substantial the focused passes
 find more than the catch-all does, and they run in parallel.

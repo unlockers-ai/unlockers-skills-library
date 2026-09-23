@@ -2,7 +2,5 @@
 .nwave/
 .DS_Store
 
-# Review output artifacts produced by the review skills
-code-review-issues.md
-complexity-review-issues.md
-testing-review-issues.md
+# Review reports: about one commit, stale the moment the branch moves (docs/review-protocol.md § 6)
+reviews/

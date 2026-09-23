@@ -8,6 +8,9 @@ args:
   - name: base_ref
     description: Base branch to compare against (default: main)
     required: false
+  - name: report_path
+    description: "Path the report must be written to, when a caller pins it (default: reviews/testing-review-issues.md)"
+    required: false
 ---
 
 # Testing Review Skill
@@ -18,7 +21,8 @@ improve our testing quality?
 **Rules:** [`docs/testing-rules.md`](../../docs/testing-rules.md) —
 **Reviewer tips:** [`docs/testing-review-guide.md`](../../docs/testing-review-guide.md)
 
-**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, severity levels, report shape. Read it first.
+**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
+Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 3–5 (*Review test files*, *Review coverage*, *Check bug-fix discipline*) below.
 
 ## Process
 
@@ -39,7 +43,7 @@ improve our testing quality?
    - If the PR is a bug fix, verify a failing test was added (fails without the fix, passes
      with it).
 
-6. **Generate report** → `testing-review-issues.md`
+6. **Confirm § 4 of the protocol is satisfied**, then **generate report** → `reviews/testing-review-issues.md`
 
 ## Output Format
 

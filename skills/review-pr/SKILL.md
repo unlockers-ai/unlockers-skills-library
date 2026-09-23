@@ -8,6 +8,9 @@ args:
   - name: base_ref
     description: Base branch to compare against (default: main)
     required: false
+  - name: report_path
+    description: "Path the report must be written to, when a caller pins it (default: reviews/code-review-issues.md)"
+    required: false
 ---
 
 # Code Review Skill
@@ -16,7 +19,8 @@ Performs a comprehensive AI-powered code review of changes between refs. For dee
 passes, also run [`review-complexity`](../review-complexity/SKILL.md) and
 [`review-testing`](../review-testing/SKILL.md).
 
-**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, severity levels, report shape. Read it first.
+**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
+Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are step 2 (*Analyze changes*) below.
 
 ## Process
 
@@ -28,7 +32,7 @@ passes, also run [`review-complexity`](../review-complexity/SKILL.md) and
 
 3. **Categorize issues by severity** (Critical / Major / Minor — see criteria below).
 
-4. **Generate report** → `code-review-issues.md` with file locations, line numbers, clear
+4. **Confirm § 4 of the protocol is satisfied**, then **generate report** → `reviews/code-review-issues.md` with file locations, line numbers, clear
    problem descriptions, concrete fixes, and summary statistics.
 
 ## Review Criteria

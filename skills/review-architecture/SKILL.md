@@ -8,6 +8,9 @@ args:
   - name: base_ref
     description: Base branch to compare against (default: main)
     required: false
+  - name: report_path
+    description: "Path the report must be written to, when a caller pins it (default: reviews/architecture-review-issues.md)"
+    required: false
 ---
 
 # Architecture Review Skill
@@ -15,7 +18,8 @@ args:
 Reviews changes for **architectural fit**: are boundaries respected, are the seams in the
 right place, and can this be extended without infrastructure leaking into the domain?
 
-**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, severity levels, report shape. Read it first.
+**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
+Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 3–5 (*Map the dependency direction*, *Apply the architecture lens*, *Check the seams*) below.
 
 **Also read:** the project's conventions doc (`AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`
 — whichever exists) and [`docs/design-patterns.md`](../../docs/design-patterns.md). If the
@@ -68,7 +72,7 @@ project keeps ADRs or design specs, check whether an active one constrains the t
    clock, randomness, subprocess — should enter through a port with at least one Fake or
    Null implementation. Constructors should require all collaborators in production.
 
-6. **Generate report** → `architecture-review-issues.md`
+6. **Confirm § 4 of the protocol is satisfied**, then **generate report** → `reviews/architecture-review-issues.md`
 
 ## Severity Model
 

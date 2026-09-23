@@ -8,6 +8,9 @@ args:
   - name: base_ref
     description: Base branch to compare against (default: main)
     required: false
+  - name: report_path
+    description: "Path the report must be written to, when a caller pins it (default: reviews/complexity-review-issues.md)"
+    required: false
 ---
 
 # Accidental Complexity Review Skill
@@ -20,7 +23,8 @@ doesn't serve the domain problem.
 See [`docs/accidental-complexity-guide.md`](../../docs/accidental-complexity-guide.md) for
 the full smell catalogue with examples and detection heuristics.
 
-**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, severity levels, report shape. Read it first.
+**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
+Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 2–3 (*Apply the complexity lens*, *Challenge each finding*) below.
 
 ## Process
 
@@ -56,7 +60,7 @@ the full smell catalogue with examples and detection heuristics.
    - Can complexity be pushed elsewhere (up the stack, into an adapter)?
    - Is there a simpler design that eliminates the need?
 
-4. **Generate report** → `complexity-review-issues.md`
+4. **Confirm § 4 of the protocol is satisfied**, then **generate report** → `reviews/complexity-review-issues.md`
 
 ## Severity Model
 
