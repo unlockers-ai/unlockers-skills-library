@@ -29,7 +29,7 @@ worded three different ways before it was extracted.
 
 **Reviewing.** [`docs/review-protocol.md`](docs/review-protocol.md) is the entry point: it
 owns the invocation contract, the exhaustiveness rule, the severity vocabulary, the report
-shape, and the rules every reviewer obeys. The six `skills/review-*` skills each add one lens on top of it. Start
+shape, and the rules every reviewer obeys. The seven `skills/review-*` skills each add one lens on top of it. Start
 there before reading any individual reviewer.
 
 **Testing.** [`docs/testing-rules.md`](docs/testing-rules.md) is the standard;

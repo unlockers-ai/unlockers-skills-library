@@ -35,7 +35,8 @@ flowchart TB
         RA[review-architecture]
         RS[review-security]
         RI[review-impact]
-        RPR ~~~ RC ~~~ RT
+        RSL[review-slop]
+        RPR ~~~ RC ~~~ RT ~~~ RSL
         RA ~~~ RS ~~~ RI
     end
 
@@ -95,7 +96,7 @@ out.
 
 ```mermaid
 flowchart LR
-    RP[review-protocol.md] --> ALLREV[all six review-* skills]
+    RP[review-protocol.md] --> ALLREV[all seven review-* skills]
     TR[testing-rules.md] --> WT[write-tests]
     TR --> RT[review-testing]
     TRG[testing-review-guide.md] --> RT
@@ -104,6 +105,7 @@ flowchart LR
     ACG --> RF[refactor]
     DP[design-patterns.md] --> RF
     DP --> RA[review-architecture]
+    SRG[slop-review-guide.md] --> RSL[review-slop]
     BFD[bugfix-workflow.md] --> WT
     BFD --> BZS[bugszero-root-cause]
     BZD[bugszero-root-cause.md] --> BZS

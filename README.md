@@ -31,10 +31,9 @@ docs/        Reference documentation that the skills and agents point to
 
 ### Review skills
 
-All six share one contract — arguments, ref resolution, exhaustiveness, severity levels,
-report shape —
-documented once in [`docs/review-protocol.md`](docs/review-protocol.md). Each skill below
-adds a single lens. They are read-only: they report, they do not fix.
+All seven share one contract — arguments, ref resolution, exhaustiveness, severity levels,
+report shape — documented once in [`docs/review-protocol.md`](docs/review-protocol.md). Each
+skill below adds a single lens. They are read-only: they report, they do not fix.
 
 | Skill | Lens | Report |
 |-------|------|--------|
@@ -44,9 +43,11 @@ adds a single lens. They are read-only: they report, they do not fix.
 | [`review-architecture`](skills/review-architecture/SKILL.md) | Boundaries, seams, dependency direction | `reviews/architecture-review-issues.md` |
 | [`review-security`](skills/review-security/SKILL.md) | Secrets, injection, authz, crypto, dependencies | `reviews/security-review-issues.md` |
 | [`review-impact`](skills/review-impact/SKILL.md) | Blast radius; which suites must pass — run this *before* pushing | `reviews/impact-analysis.md` |
+| [`review-slop`](skills/review-slop/SKILL.md) | Correct work that shouldn't be in the diff — verbose prose, duplication across siblings, ceremony, checks in the wrong layer | `reviews/slop-review-issues.md` |
 
 `review-pr` alone is enough for a small change. For anything substantial the focused passes
-find more than the catch-all does, and they run in parallel.
+find more than the catch-all does, and they run in parallel. `review-slop` is for diffs heavy
+in docs, config, CI or deploy plumbing, where the other lenses have little to say.
 
 ### Other skills
 
@@ -73,6 +74,7 @@ find more than the catch-all does, and they run in parallel.
 | [`3p-protect-prepare-produce.md`](docs/3p-protect-prepare-produce.md) | `legacy-3p` |
 | [`feature-workflow.md`](docs/feature-workflow.md) | feature development |
 | [`design-patterns.md`](docs/design-patterns.md) | `refactor`, `review-architecture` |
+| [`slop-review-guide.md`](docs/slop-review-guide.md) | `review-slop` |
 
 ## Using It with Claude Code
 
