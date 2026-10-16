@@ -5,8 +5,9 @@ For bugs, see [`bugfix-workflow.md`](bugfix-workflow.md). For features, always:
 1. **Business need in the work item.** Stated as *As a `<role>` / I want `<capability>` /
    so that `<outcome>`*. Restate it verbatim in the PR description. If missing, fix the
    work item or ask the user before proceeding.
-2. **Challenge the scope before slicing it.** Capture the need as a very short PRD, then
-   offer the user reductions — fewer functional cases, fewer users, an edge case left to
+2. **Challenge the scope before slicing it.** Run
+   [`scope-challenge`](../skills/scope-challenge/SKILL.md): capture the need as a very short
+   PRD, then offer the user reductions — fewer functional cases, fewer users, an edge case left to
    fail explicitly. Cutting the request comes before splitting it; slicing a request that
    should have been half its size just produces more slices.
 3. **Propose vertical slices by default.** Split the agreed scope into the smallest

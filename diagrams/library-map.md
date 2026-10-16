@@ -11,10 +11,12 @@ Everything in the library sits somewhere on the path from *deciding to change co
 flowchart TB
     subgraph W [" Deciding what to write "]
         direction LR
+        SC[scope-challenge]
         BF[bugfix-workflow]
         FF[feature-workflow]
         BZ[bugszero-root-cause]
         L3P[legacy-3p]
+        SC -->|agreed scope| FF
         BF -.->|second bug<br/>of its kind| BZ
         FF -.->|can't start:<br/>no tests, no seams| L3P
     end

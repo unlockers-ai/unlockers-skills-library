@@ -39,6 +39,11 @@ there before reading any individual reviewer.
 [`skills/adapter-contract-testing`](skills/adapter-contract-testing/SKILL.md) covers the
 risk the no-mocks rule creates — a fake that has drifted from what it stands in for.
 
+**Deciding what to build.** [`skills/scope-challenge`](skills/scope-challenge/SKILL.md)
+runs at the front of feature work: a very short PRD, then reductions offered to the user
+before anything is built. It questions *what*; the feature workflow's slicing step then
+handles *how*.
+
 **Changing code.** [`docs/bugfix-workflow.md`](docs/bugfix-workflow.md) and
 [`docs/feature-workflow.md`](docs/feature-workflow.md) are the defaults, both test-first.
 [`skills/bugszero-root-cause`](skills/bugszero-root-cause/SKILL.md) is the escalation when a

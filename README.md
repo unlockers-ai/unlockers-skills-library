@@ -53,6 +53,7 @@ in docs, config, CI or deploy plumbing, where the other lenses have little to sa
 
 | Skill | What it does |
 |-------|--------------|
+| [`scope-challenge`](skills/scope-challenge/SKILL.md) | Capture a feature request as a very short PRD, then challenge it for the smallest valuable scope before building. |
 | [`write-tests`](skills/write-tests/SKILL.md) | Write or improve tests: fakes over mocks, whole-object assertions, short bodies. |
 | [`adapter-contract-testing`](skills/adapter-contract-testing/SKILL.md) | Hold a fake and its real adapter to one shared contract, so the fake cannot drift. |
 | [`bugszero-root-cause`](skills/bugszero-root-cause/SKILL.md) | Fix a bug by removing the design weakness that allowed it, not just the symptom. |
@@ -73,7 +74,7 @@ in docs, config, CI or deploy plumbing, where the other lenses have little to sa
 | [`bugfix-workflow.md`](docs/bugfix-workflow.md) | `write-tests`, `bugszero-root-cause`, testing rules |
 | [`bugszero-root-cause.md`](docs/bugszero-root-cause.md) | `bugszero-root-cause` |
 | [`3p-protect-prepare-produce.md`](docs/3p-protect-prepare-produce.md) | `legacy-3p` |
-| [`feature-workflow.md`](docs/feature-workflow.md) | feature development |
+| [`feature-workflow.md`](docs/feature-workflow.md) | feature development, `scope-challenge` |
 | [`code-design-rules.md`](docs/code-design-rules.md) | `review-pr`, `review-complexity`, `refactor`, feature workflow |
 | [`hexagonal-architecture-rules.md`](docs/hexagonal-architecture-rules.md) | `review-architecture`, `review-pr`, testing rules, feature workflow |
 | [`design-patterns.md`](docs/design-patterns.md) | `refactor`, `review-architecture` |
