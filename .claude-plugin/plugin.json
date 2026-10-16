@@ -1,0 +1,9 @@
+{
+  "name": "unlockers-skills",
+  "description": "Review lenses, test-writing and root-cause skills, a quality gate, and the merger and refactor agents",
+  "author": {
+    "name": "Unlockers"
+  },
+  "homepage": "https://github.com/unlockers-ai/unlockers-skills-library",
+  "license": "MIT"
+}

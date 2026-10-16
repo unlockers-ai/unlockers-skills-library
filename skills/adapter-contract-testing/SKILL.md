@@ -8,11 +8,11 @@ description: Write or review contract tests that hold a fake and its real adapte
 Runs one shared test suite against both the real adapter and its simulator, so the fake
 cannot drift away from what it stands in for.
 
-**Method:** [`docs/adapter-contract-testing.md`](../../docs/adapter-contract-testing.md) — read it first.
+**Method:** [`references/adapter-contract-testing.md`](references/adapter-contract-testing.md) — read it first.
 
 ## When this applies
 
-The `no-mocks` rule in [`testing-rules.md`](../../docs/testing-rules.md) buys fast, readable
+The `no-mocks` rule in [`testing-rules.md`](references/testing-rules.md) buys fast, readable
 tests by testing against fakes. It also creates one risk: a fake that has quietly stopped
 behaving like the thing it replaces. Contract testing is what makes that trade safe. Reach
 for it whenever a port gets a second implementation.

@@ -23,7 +23,7 @@ locally that the rest should adopt, (d) wrote down a rule the rest does not yet 
 fixes with an honest blast radius.
 
 The `review-*` skills cannot do this by construction: they are bounded by a diff, and every
-finding here lives in a file the diff did not touch. [`review-protocol.md`](../../docs/review-protocol.md)
+finding here lives in a file the diff did not touch. [`review-protocol.md`](references/review-protocol.md)
 § 4 asks a diff reviewer to check the siblings of what changed; this skill makes that the
 whole job, over the codebase, unbounded in time.
 
@@ -51,11 +51,11 @@ whole job, over the codebase, unbounded in time.
    finding that is already an issue is reported as "already #N" with only what you add.
 4. **Read the rules** the project has written down: its conventions doc (`CLAUDE.md`,
    `AGENTS.md`), and whichever of these it has adopted —
-   [`code-design-rules.md`](../../docs/code-design-rules.md),
-   [`hexagonal-architecture-rules.md`](../../docs/hexagonal-architecture-rules.md),
-   [`design-patterns.md`](../../docs/design-patterns.md),
-   [`accidental-complexity-guide.md`](../../docs/accidental-complexity-guide.md),
-   [`testing-rules.md`](../../docs/testing-rules.md). They define "good" and "cruft"
+   [`code-design-rules.md`](references/code-design-rules.md),
+   [`hexagonal-architecture-rules.md`](references/hexagonal-architecture-rules.md),
+   [`design-patterns.md`](references/design-patterns.md),
+   [`accidental-complexity-guide.md`](references/accidental-complexity-guide.md),
+   [`testing-rules.md`](references/testing-rules.md). They define "good" and "cruft"
    *here*; do not import your own taste where they speak. Note which of them the window
    **edited** — a newly written rule is a seed.
 
@@ -126,7 +126,7 @@ the clump, a port, a split.
   `code_health_review` on a file gives smells with line ranges.
 - **Without it:** the `.design/` complexity hits plus churn —
   `git log --since="6 months ago" --format= --name-only | sort | uniq -c | sort -rn | head`
-  — give the hotspots; the [tools table](../../docs/accidental-complexity-guide.md#tools-that-measure-these)
+  — give the hotspots; the [tools table](references/accidental-complexity-guide.md#tools-that-measure-these)
   says which rule measures which smell.
 
 Either way, remember a health score cannot see a semantic default that lies: a green
@@ -210,7 +210,7 @@ python3 skills/review-drift/scripts/drift_publish.py \
 ```
 
 Add `.design/` to the project's `.gitignore`. Reports are about one window and go stale as
-soon as main moves, like the review reports in [`review-protocol.md`](../../docs/review-protocol.md) § 6.
+soon as main moves, like the review reports in [`review-protocol.md`](references/review-protocol.md) § 6.
 
 **Nightly**, [`scripts/review-drift-nightly.sh`](scripts/review-drift-nightly.sh) does the
 whole loop: skip if no merge landed since the newest `drift/*` tag, review in a throwaway

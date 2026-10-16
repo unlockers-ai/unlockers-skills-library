@@ -8,7 +8,7 @@ description: Write or improve tests that read like specifications — fakes over
 Apply the project's testing standards when creating or revising tests, in any language or
 test framework.
 
-**Full rules:** [`docs/testing-rules.md`](../../docs/testing-rules.md)
+**Full rules:** [`references/testing-rules.md`](references/testing-rules.md)
 
 ## The Short Version
 
@@ -25,10 +25,10 @@ test framework.
 
 ## For Bug Fixes
 
-Follow [`docs/bugfix-workflow.md`](../../docs/bugfix-workflow.md) — write a failing test
+Follow [`references/bugfix-workflow.md`](references/bugfix-workflow.md) — write a failing test
 that reproduces the *observable consequence* first, confirm it fails, then fix.
 
 ## For New Features
 
-Follow [`docs/feature-workflow.md`](../../docs/feature-workflow.md) — agree the business
+Follow [`references/feature-workflow.md`](references/feature-workflow.md) — agree the business
 rules and the test list with the user before writing code.

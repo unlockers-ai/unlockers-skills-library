@@ -9,11 +9,11 @@ argument-hint: [change-description]
 A sequencing strategy for changing legacy code. The order is the whole method: safety
 first, then design, then the feature. Skipping ahead is how legacy code stays legacy.
 
-**Method:** [`docs/3p-protect-prepare-produce.md`](../../docs/3p-protect-prepare-produce.md) — read it first.
+**Method:** [`references/3p-protect-prepare-produce.md`](references/3p-protect-prepare-produce.md) — read it first.
 
 ## When this applies
 
-Use it when [`feature-workflow.md`](../../docs/feature-workflow.md) cannot start — the code
+Use it when [`feature-workflow.md`](references/feature-workflow.md) cannot start — the code
 has no tests, or has tests that would not catch a regression, or is shaped so the feature
 has nowhere to go. If the area is already well covered and well factored, use the ordinary
 workflow; 3P is for the case where writing the first test is itself the hard part.

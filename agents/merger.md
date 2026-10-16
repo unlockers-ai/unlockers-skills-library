@@ -4,6 +4,7 @@ description: >
   Handles the full PR merge lifecycle: push the branch, enable auto-merge, monitor CI and
   review comments, fix issues, rebase on conflicts, and ping the user when only human
   approval remains. Use when a PR is ready to land.
+mode: subagent
 args:
   - name: pr_id
     description: The PR/MR number. If omitted, resolved from the current branch.

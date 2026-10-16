@@ -9,12 +9,12 @@ argument-hint: [bug-description]
 Treats a bug as evidence of a design weakness. The fix is not complete when the symptom
 stops; it is complete when the same *family* of defect has become hard to write.
 
-**Method:** [`docs/bugszero-root-cause.md`](../../docs/bugszero-root-cause.md) — read it
+**Method:** [`references/bugszero-root-cause.md`](references/bugszero-root-cause.md) — read it
 first, including the bug-pattern catalogue it links to.
 
 ## Relationship to the ordinary bug workflow
 
-[`bugfix-workflow.md`](../../docs/bugfix-workflow.md) is the default: reproduce with a
+[`bugfix-workflow.md`](references/bugfix-workflow.md) is the default: reproduce with a
 failing test, fix, confirm. This skill is what you run when that is not enough — when the
 bug is the second of its kind, when the natural fix is another guard clause, or when the
 reproduction was hard to write because the code offers nowhere to stand. It replaces the

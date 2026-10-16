@@ -6,7 +6,7 @@ args:
     description: "Branch to review, OR a PR/MR number (default: current branch). When a number is given, the source/target branches are resolved from the git platform."
     required: false
   - name: base_ref
-    description: Base branch to compare against (default: main)
+    description: "Base branch to compare against (default: main)"
     required: false
   - name: report_path
     description: "Path the report must be written to, when a caller pins it (default: reviews/security-review-issues.md)"
@@ -21,12 +21,12 @@ diff. Examples below are Python; the vectors are not.
 **Scope:** application code. Infrastructure and network hardening are out of scope unless
 the diff touches deployment configuration.
 
-**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
+**Protocol:** [`references/review-protocol.md`](references/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
 Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 2–4 (*Find the trust boundaries*, *Apply the security lens*, *Check dependencies*) below.
 
 ## Process
 
-1. **Resolve refs and gather the diff** — per [`review-protocol.md`](../../docs/review-protocol.md).
+1. **Resolve refs and gather the diff** — per [`review-protocol.md`](references/review-protocol.md).
 
 2. **Find the trust boundaries this diff touches.** Security findings cluster at
    boundaries, so classify the changes first: HTTP routes, message/queue handlers,
@@ -86,7 +86,7 @@ Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 2�
 
 ## Output Format
 
-Per [`review-protocol.md`](../../docs/review-protocol.md), with one extra field that is
+Per [`review-protocol.md`](references/review-protocol.md), with one extra field that is
 required on every finding:
 
 ```markdown

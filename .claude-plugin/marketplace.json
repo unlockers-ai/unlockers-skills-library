@@ -1,0 +1,14 @@
+{
+  "name": "unlockers",
+  "description": "Unlockers skills: code review lenses, testing discipline, refactoring, and getting PRs merged",
+  "owner": {
+    "name": "Unlockers"
+  },
+  "plugins": [
+    {
+      "name": "unlockers-skills",
+      "source": "./",
+      "description": "Review lenses, test-writing and root-cause skills, a quality gate, and the merger and refactor agents"
+    }
+  ]
+}

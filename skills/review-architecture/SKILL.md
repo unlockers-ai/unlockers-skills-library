@@ -6,7 +6,7 @@ args:
     description: "Branch to review, OR a PR/MR number (default: current branch). When a number is given, the source/target branches are resolved from the git platform."
     required: false
   - name: base_ref
-    description: Base branch to compare against (default: main)
+    description: "Base branch to compare against (default: main)"
     required: false
   - name: report_path
     description: "Path the report must be written to, when a caller pins it (default: reviews/architecture-review-issues.md)"
@@ -18,12 +18,12 @@ args:
 Reviews changes for **architectural fit**: are boundaries respected, are the seams in the
 right place, and can this be extended without infrastructure leaking into the domain?
 
-**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
+**Protocol:** [`references/review-protocol.md`](references/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
 Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 3–5 (*Map the dependency direction*, *Apply the architecture lens*, *Check the seams*) below.
 
 **Also read:** the project's conventions doc (`AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`
-— whichever exists), [`docs/design-patterns.md`](../../docs/design-patterns.md) and
-[`docs/hexagonal-architecture-rules.md`](../../docs/hexagonal-architecture-rules.md) — the
+— whichever exists), [`references/design-patterns.md`](references/design-patterns.md) and
+[`references/hexagonal-architecture-rules.md`](references/hexagonal-architecture-rules.md) — the
 latter only where the codebase is actually hexagonal (see step 2), and often only for part
 of it: one-shot scripts and static-site builds reviewed against the hexagon produce
 findings nobody will act on. If the project keeps ADRs or design specs, check whether an
@@ -31,7 +31,7 @@ active one constrains the touched area.
 
 ## Process
 
-1. **Resolve refs and gather the diff** — per [`review-protocol.md`](../../docs/review-protocol.md).
+1. **Resolve refs and gather the diff** — per [`review-protocol.md`](references/review-protocol.md).
 
 2. **Learn the existing architecture before judging it.** For each touched package, read
    its README, its entry point, and one or two existing modules. Determine what style the
@@ -69,7 +69,7 @@ active one constrains the touched area.
      ask what state is left behind when the second write fails after the first succeeded
    - Controller doing more than a few lines of work instead of delegating to a use case
    - A use case interleaving reads, decisions and writes past the signals in
-     [`hexagonal-architecture-rules.md`](../../docs/hexagonal-architecture-rules.md) rule 2
+     [`hexagonal-architecture-rules.md`](references/hexagonal-architecture-rules.md) rule 2
      — three functional cases, a second catch, a second read-port or write-port call
    - An adapter reading an inbound payload field by field (`.get("status")`) where the
      provider publishes a schema — rule 5
@@ -96,7 +96,7 @@ active one constrains the touched area.
 
 ## Output Format
 
-Per [`review-protocol.md`](../../docs/review-protocol.md), with two extra fields on each finding:
+Per [`review-protocol.md`](references/review-protocol.md), with two extra fields on each finding:
 
 ```markdown
 **Principle violated:** e.g. dependency inversion / package boundary / seam-at-boundary

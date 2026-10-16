@@ -4,6 +4,7 @@ description: >
   Clean-code refactoring specialist. Improves readability, maintainability, modularity, and
   structure without changing observable behaviour. Use when code needs restructuring rather
   than new functionality.
+mode: subagent
 ---
 
 # Refactoring Agent — Clean Code Specialist

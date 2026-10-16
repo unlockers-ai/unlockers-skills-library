@@ -6,7 +6,7 @@ args:
     description: "Branch to review, OR a PR/MR number (default: current branch). When a number is given, the source/target branches are resolved from the git platform."
     required: false
   - name: base_ref
-    description: Base branch to compare against (default: main)
+    description: "Base branch to compare against (default: main)"
     required: false
   - name: report_path
     description: "Path the report must be written to, when a caller pins it (default: reviews/code-review-issues.md)"
@@ -19,19 +19,19 @@ Performs a comprehensive AI-powered code review of changes between refs. For dee
 passes, also run [`review-complexity`](../review-complexity/SKILL.md) and
 [`review-testing`](../review-testing/SKILL.md).
 
-**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
+**Protocol:** [`references/review-protocol.md`](references/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
 Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are step 2 (*Analyze changes*) below.
 
 **Standards to review against**, so a finding cites a rule rather than a preference:
-[`code-design-rules.md`](../../docs/code-design-rules.md) (types and exceptions),
-[`hexagonal-architecture-rules.md`](../../docs/hexagonal-architecture-rules.md) (where code
-goes — only where the codebase is actually hexagonal), [`testing-rules.md`](../../docs/testing-rules.md)
+[`code-design-rules.md`](references/code-design-rules.md) (types and exceptions),
+[`hexagonal-architecture-rules.md`](references/hexagonal-architecture-rules.md) (where code
+goes — only where the codebase is actually hexagonal), [`testing-rules.md`](references/testing-rules.md)
 (what a test must look like), and the project's conventions doc for what it has already
 decided on purpose.
 
 ## Process
 
-1. **Resolve refs and gather the diff** — per [`review-protocol.md`](../../docs/review-protocol.md).
+1. **Resolve refs and gather the diff** — per [`review-protocol.md`](references/review-protocol.md).
 
 2. **Analyze changes**
    - Review all modified files for bugs, design issues, and quality problems.

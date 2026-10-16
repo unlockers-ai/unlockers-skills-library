@@ -20,6 +20,7 @@ version: the [merger's lifecycle](diagrams/merger-lifecycle.md) and
 agents/      Subagent definitions (autonomous task-performers)
 skills/      Skills — task-scoped capabilities (SKILL.md per skill)
 docs/        Reference documentation that the skills and agents point to
+tools/       Keeps the skills installable: bundles docs into each skill, validates the format
 ```
 
 ### Agents
@@ -80,14 +81,52 @@ in docs, config, CI or deploy plumbing, where the other lenses have little to sa
 | [`design-patterns.md`](docs/design-patterns.md) | `refactor`, `review-architecture` |
 | [`slop-review-guide.md`](docs/slop-review-guide.md) | `review-slop` |
 
-## Using It with Claude Code
+## Installing
 
-These are plain Markdown definitions. To use them in a project:
+Every skill follows the [Agent Skills](https://agentskills.io) format — a directory with a
+`SKILL.md` — so the same files load in Claude Code, OpenCode, GitHub Copilot and the other
+clients that read it. Each skill is self-contained: the docs it relies on are bundled in its
+`references/` directory, so installing one skill never leaves a dangling link.
 
-- **Agents:** copy a file from `agents/` into `.claude/agents/` (or `~/.claude/agents/`).
-- **Skills:** copy a directory from `skills/` into `.claude/skills/`. Each contains a
-  `SKILL.md`; some (`quality-gate`, `azure-devops-pr`) also ship scripts and config.
-- **Docs:** copy `docs/` alongside and keep the relative links intact, or adjust the paths.
+**OpenCode, GitHub Copilot, Cursor, Codex and others** — with the
+[`skills`](https://github.com/vercel-labs/skills) CLI:
+
+```bash
+npx skills add unlockers-ai/unlockers-skills-library             # choose skills and clients interactively
+npx skills add unlockers-ai/unlockers-skills-library --skill '*' -a opencode -y
+npx skills add unlockers-ai/unlockers-skills-library -g          # for every project (~/.config/opencode/skills, ~/.copilot/skills)
+npx skills update                                                # pull the latest version
+```
+
+Project installs land in `.agents/skills/`, which OpenCode and Copilot both read; commit them
+or the `skills-lock.json` the CLI writes, so the team gets the same versions.
+
+**Claude Code** — as a plugin, which also brings the agents:
+
+```
+/plugin marketplace add unlockers-ai/unlockers-skills-library
+/plugin install unlockers-skills@unlockers
+```
+
+Skills are then named `unlockers-skills:review-pr` and so on. Update with
+`/plugin marketplace update unlockers`, or enable auto-update for the marketplace under
+**Marketplaces** in `/plugin`. The `npx skills` route above works for Claude Code too, if you
+want the skills without the agents.
+
+**By hand** — copy a directory from `skills/` into `.claude/skills/`, `.opencode/skills/`,
+`.github/skills/` or `.agents/skills/`. Copy the whole directory: some skills
+(`quality-gate`, `azure-devops-pr`, `review-drift`) ship scripts and config next to `SKILL.md`.
+
+**Agents** are not part of the Agent Skills format, so each client has its own place for them.
+The files in `agents/` carry frontmatter for both Claude Code and OpenCode:
+
+- Claude Code: the plugin installs them, or copy into `.claude/agents/`.
+- OpenCode: copy into `.opencode/agents/` (or `~/.config/opencode/agents/`). The file name is
+  the agent name.
+- GitHub Copilot: copy into `.github/agents/` and rename to `<name>.agent.md`.
+
+The agents link to `docs/` in this repository, so outside a plugin install they read those
+rules from GitHub.
 
 The review skills and the merger agent take an optional PR/MR number or branch and default
 to the current branch against `main`.

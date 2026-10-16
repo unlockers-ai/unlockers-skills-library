@@ -6,7 +6,7 @@ args:
     description: "Branch to review, OR a PR/MR number (default: current branch). When a number is given, the source/target branches are resolved from the git platform."
     required: false
   - name: base_ref
-    description: Base branch to compare against (default: main)
+    description: "Base branch to compare against (default: main)"
     required: false
   - name: report_path
     description: "Path the report must be written to, when a caller pins it (default: reviews/complexity-review-issues.md)"
@@ -20,18 +20,18 @@ doesn't serve the domain problem.
 
 ## Reference
 
-See [`docs/accidental-complexity-guide.md`](../../docs/accidental-complexity-guide.md) for
+See [`references/accidental-complexity-guide.md`](references/accidental-complexity-guide.md) for
 the full smell catalogue with examples, detection heuristics, and the linter rules that
-measure each smell, and [`docs/code-design-rules.md`](../../docs/code-design-rules.md) for
+measure each smell, and [`references/code-design-rules.md`](references/code-design-rules.md) for
 the shape a suggestion should point at — a missing value object or a missing
 behaviour-bearing type is behind more of these smells than any other single cause.
 
-**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
+**Protocol:** [`references/review-protocol.md`](references/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
 Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 2–3 (*Apply the complexity lens*, *Challenge each finding*) below.
 
 ## Process
 
-1. **Resolve refs and gather the diff** — per [`review-protocol.md`](../../docs/review-protocol.md).
+1. **Resolve refs and gather the diff** — per [`review-protocol.md`](references/review-protocol.md).
 
 2. **Apply the complexity lens** — for each changed file, hunt for:
 
@@ -53,7 +53,7 @@ Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 2�
      method × attribute matrix (guide §10) for what is inside;
      [`scripts/class_cohesion.py`](scripts/class_cohesion.py) computes it for Python
    - Long functions — the longest function the protocol's § 2 listed, against
-     [`code-design-rules.md`](../../docs/code-design-rules.md) rule 4
+     [`code-design-rules.md`](references/code-design-rules.md) rule 4
 
    **Minor** (code smells):
    - Long parameter lists (>4 params)

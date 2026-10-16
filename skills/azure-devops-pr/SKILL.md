@@ -124,7 +124,7 @@ conventional-commit PR title produces a conventional-commit merge. Fix the PR ti
 running this, not after.
 
 For the full merge lifecycle — push, enable auto-complete, watch CI, fix, escalate — use the
-[`merger`](../../agents/merger.md) agent, which drives this skill.
+[`merger`](https://github.com/unlockers-ai/unlockers-skills-library/blob/main/agents/merger.md) agent, which drives this skill.
 
 ## Notes
 

@@ -6,7 +6,7 @@ args:
     description: "Branch to review, OR a PR/MR number (default: current branch). When a number is given, the source/target branches are resolved from the git platform."
     required: false
   - name: base_ref
-    description: Base branch to compare against (default: main)
+    description: "Base branch to compare against (default: main)"
     required: false
   - name: report_path
     description: "Path the report must be written to, when a caller pins it (default: reviews/testing-review-issues.md)"
@@ -18,15 +18,15 @@ args:
 Reviews PR changes to ensure tests meet project standards. Focus: does this PR maintain or
 improve our testing quality?
 
-**Rules:** [`docs/testing-rules.md`](../../docs/testing-rules.md) —
-**Reviewer tips:** [`docs/testing-review-guide.md`](../../docs/testing-review-guide.md)
+**Rules:** [`references/testing-rules.md`](references/testing-rules.md) —
+**Reviewer tips:** [`references/testing-review-guide.md`](references/testing-review-guide.md)
 
-**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
+**Protocol:** [`references/review-protocol.md`](references/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
 Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 3–5 (*Review test files*, *Review coverage*, *Check bug-fix discipline*) below.
 
 ## Process
 
-1. **Resolve refs and gather the diff** — per [`review-protocol.md`](../../docs/review-protocol.md).
+1. **Resolve refs and gather the diff** — per [`review-protocol.md`](references/review-protocol.md).
 
 2. **Split the diff** into (a) new/modified test files, (b) new/modified production code.
 

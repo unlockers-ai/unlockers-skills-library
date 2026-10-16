@@ -9,7 +9,7 @@ Copy this file to `CLAUDE.md` or symlink it if your tooling expects that name.
 
 ## The map
 
-Three kinds of file, and the distinction matters when adding one:
+Each directory has one job, and the distinction matters when adding a file:
 
 | Directory | What lives there | Test for belonging |
 |-----------|------------------|--------------------|
@@ -17,6 +17,7 @@ Three kinds of file, and the distinction matters when adding one:
 | `skills/` | Task-scoped capabilities invoked for one job | Has an obvious "I am now doing X" trigger |
 | `docs/` | Knowledge that more than one skill needs | Two or more things link to it, or would if it existed |
 | `diagrams/` | Visual companions, for humans | It would be weight in a file an agent reads |
+| `tools/` | Repo maintenance: bundle docs into skills, validate the skill format | It runs on this repo, not on a project a skill is used in |
 
 Diagrams stay in `diagrams/` and out of the skills and docs: those are read by agents, where
 prose is the working format. If a diagram and the prose disagree, the prose is right.
@@ -94,9 +95,21 @@ review sees why, and where else the same thing is happening.
 
 1. Check whether it is a lens on something that exists rather than a new thing. Another
    reviewer is usually a section in an existing one.
-2. `skills/<name>/SKILL.md`, with YAML frontmatter: `name`, `description`, and `args` if it
-   takes any. The `description` is what gets matched against a user's request — write it to
-   be found, listing the phrasings that should trigger it.
-3. Put shared knowledge in `docs/` and link to it. Put scripts inside the skill directory,
-   not in a repo-level `scripts/` — a skill has to be copyable on its own.
-4. Add it to the README tables and to the map above.
+2. `skills/<name>/SKILL.md`, with YAML frontmatter: `name` (lowercase-hyphenated, equal to
+   the directory name), `description`, and `args` if it takes any. The `description` is what
+   gets matched against a user's request — write it to be found, listing the phrasings that
+   should trigger it. Quote any YAML value containing `: ` — a strict YAML parser rejects the
+   frontmatter, and a client that uses one skips the skill without saying so.
+3. Put shared knowledge in `docs/`, and link it from the skill as `references/<doc>.md`,
+   never `../../docs/`. Put scripts inside the skill directory, not in a repo-level
+   `scripts/` — a skill has to be copyable on its own.
+4. Run `python3 tools/sync-references.py` and `python3 tools/validate-skills.py`. CI runs
+   both and fails if either would change or complain.
+5. Add it to the README tables and to the map above.
+
+## Editing a doc
+
+Edit `docs/`, then run `python3 tools/sync-references.py`. It copies each doc into the
+`references/` of every skill that links to it, directly or through another doc. Those copies
+are what an installed skill reads, because `docs/` is not installed with it. Never edit a
+file under `references/` — the next sync overwrites it, and CI fails until it does.

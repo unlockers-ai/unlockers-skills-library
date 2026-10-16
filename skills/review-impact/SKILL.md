@@ -6,7 +6,7 @@ args:
     description: "Branch to review, OR a PR/MR number (default: current branch). When a number is given, the source/target branches are resolved from the git platform."
     required: false
   - name: base_ref
-    description: Base branch to compare against (default: main)
+    description: "Base branch to compare against (default: main)"
     required: false
   - name: report_path
     description: "Path the report must be written to, when a caller pins it (default: reviews/impact-analysis.md)"
@@ -21,7 +21,7 @@ wrong, and which suites must pass before pushing?
 Unlike the other reviewers, this one is most useful **before** you push, not after. It
 answers "what did I just put at risk", and its output is a list of commands to run.
 
-**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
+**Protocol:** [`references/review-protocol.md`](references/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
 Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 2–7 — every changed path bucketed, every modified symbol traced below.
 
 > **Adapt to your repo.** This skill assumes a multi-package repo — shared packages that
@@ -32,7 +32,7 @@ Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 2�
 
 ## Process
 
-1. **Resolve refs and gather the diff** — per [`review-protocol.md`](../../docs/review-protocol.md).
+1. **Resolve refs and gather the diff** — per [`review-protocol.md`](references/review-protocol.md).
 
 2. **Bucket every changed path**: shared package, deployable, scripts, root config,
    docs/specs, infrastructure. The interesting ones are shared packages — a change confined

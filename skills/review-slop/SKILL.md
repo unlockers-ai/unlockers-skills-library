@@ -6,7 +6,7 @@ args:
     description: "Branch to review, OR a PR/MR number (default: current branch). When a number is given, the source/target branches are resolved from the git platform."
     required: false
   - name: base_ref
-    description: Base branch to compare against (default: main)
+    description: "Base branch to compare against (default: main)"
     required: false
   - name: report_path
     description: "Path the report must be written to, when a caller pins it (default: reviews/slop-review-issues.md)"
@@ -20,21 +20,21 @@ should not be in the diff.
 
 ## Reference
 
-[`docs/slop-review-guide.md`](../../docs/slop-review-guide.md) — the seven patterns with the
+[`references/slop-review-guide.md`](references/slop-review-guide.md) — the seven patterns with the
 quotes they came from, how to confirm each, and the counter-pressure test. **Read it first,
 including the counter-pressure section**; a reviewer that skips it deletes the checks that
 catch silent failure.
 
-**Protocol:** [`docs/review-protocol.md`](../../docs/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
+**Protocol:** [`references/review-protocol.md`](references/review-protocol.md) — arguments, ref resolution, exhaustiveness, severity levels, report shape. Read it first.
 Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 3–4 (*Apply the slop lens*, *Apply the counter-pressure*) below.
 
-[`docs/accidental-complexity-guide.md`](../../docs/accidental-complexity-guide.md) is a
+[`references/accidental-complexity-guide.md`](references/accidental-complexity-guide.md) is a
 different axis (smells inside domain code). Where a finding is really about a missing value
 object or a defensive null check, it belongs to `review-complexity`, not here.
 
 ## Process
 
-1. **Resolve refs and gather the diff** — per [`review-protocol.md`](../../docs/review-protocol.md).
+1. **Resolve refs and gather the diff** — per [`review-protocol.md`](references/review-protocol.md).
    Read the commit messages too: a war story already in one does not also belong in a
    comment.
 
@@ -91,7 +91,7 @@ object or a defensive null check, it belongs to `review-complexity`, not here.
 
 ## Output Format
 
-Per [`review-protocol.md`](../../docs/review-protocol.md) § 6, with two additions — every
+Per [`review-protocol.md`](references/review-protocol.md) § 6, with two additions — every
 finding names the cost of keeping it, and every finding that removes a check names what
 still catches the failure:
 
