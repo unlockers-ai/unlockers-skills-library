@@ -29,8 +29,10 @@ worded three different ways before it was extracted.
 
 **Reviewing.** [`docs/review-protocol.md`](docs/review-protocol.md) is the entry point: it
 owns the invocation contract, the exhaustiveness rule, the severity vocabulary, the report
-shape, and the rules every reviewer obeys. The seven `skills/review-*` skills each add one lens on top of it. Start
-there before reading any individual reviewer.
+shape, the rules every reviewer obeys, and § 7 for later rounds. The seven `skills/review-*` lens skills each add one lens on top of it. Start
+there before reading any individual reviewer. [`skills/review-all`](skills/review-all/SKILL.md) runs five of
+them in parallel before merge, then the fix loop: the same reviewers approve the plan and
+verify the fix against one shared history, so the rounds converge.
 
 **Testing.** [`docs/testing-rules.md`](docs/testing-rules.md) is the standard;
 [`skills/write-tests`](skills/write-tests/SKILL.md) applies it,
@@ -54,7 +56,9 @@ changing behaviour, guided by
 the refactor agent aim at is stated in [`docs/code-design-rules.md`](docs/code-design-rules.md)
 (inside a type or function) and
 [`docs/hexagonal-architecture-rules.md`](docs/hexagonal-architecture-rules.md) (where code
-goes).
+goes). [`skills/port-refactoring`](skills/port-refactoring/SKILL.md) designs the port an adapter
+to an external service should become, following
+[`docs/port-refactoring-method.md`](docs/port-refactoring-method.md).
 
 **Landing it.** [`agents/merger`](agents/merger.md) owns the merge lifecycle.
 [`skills/azure-devops-pr`](skills/azure-devops-pr/SKILL.md) is the Azure DevOps

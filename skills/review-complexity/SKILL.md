@@ -54,13 +54,26 @@ Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 2�
      [`scripts/class_cohesion.py`](scripts/class_cohesion.py) computes it for Python
    - Long functions — the longest function the protocol's § 2 listed, against
      [`code-design-rules.md`](../../docs/code-design-rules.md) rule 4
+   - **A primitive with logic tied to it that crosses a port or a router naked**
+     ([`code-design-rules.md`](../../docs/code-design-rules.md) rule 1). Primitive includes
+     `list`/`set`/`dict`. Major because wrapping is one of the first refactoring moves:
+     once the primitive has spread through every signature, the type costs a migration
+     instead of a constructor
 
    **Minor** (code smells):
    - Long parameter lists (>4 params)
    - Speculative generality (YAGNI violations)
    - Unnecessary class/state (could be a function)
-   - Primitive obsession / data clumps
+   - A primitive nobody computes on, or a data clump inside one module
    - Nested conditionals (arrow anti-pattern)
+
+   **The primitive step is not optional.** For every new or changed dataclass, port
+   signature and router or handler parameter in the diff, list each `str`, `int`, `float`,
+   `bool`, `datetime` and each collection of them, and write next to it what logic is tied
+   to it (a format, a comparison, a parse, a default, a lookup key) and what type it stands
+   in for. A list with nothing next to any line is the finding "none"; a missing list is a
+   missing step. Tools give a screen — CodeScene's primitive-obsession percentage, `ruff
+   PLR2004` for magic values — but both under-count; the list is the check.
 
 3. **Challenge each finding:**
    - Can this be removed entirely?
@@ -74,8 +87,8 @@ Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 2�
 | Severity | Indicators |
 |----------|------------|
 | Critical | Null checks in domain logic, emptiness guards before operations already safe on empty, optional params never used as null, exception handling masking design flaws |
-| Major | Multi-layer try/catch, boolean flags splitting behaviour, unnecessary delegation, feature envy |
-| Minor | Long param lists, speculative generality, unnecessary state, primitive obsession |
+| Major | Multi-layer try/catch, boolean flags splitting behaviour, unnecessary delegation, feature envy, a primitive with logic on it crossing a port or a router |
+| Minor | Long param lists, speculative generality, unnecessary state, a primitive nobody computes on |
 
 ## Output Format
 

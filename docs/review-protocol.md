@@ -2,7 +2,8 @@
 
 Every `review-*` skill in this library shares one invocation contract, one severity
 vocabulary, and one report shape. Each skill documents only its own **lens** — what it
-looks for — and points here for the rest.
+looks for — and points here for the rest. [`review-all`](../skills/review-all/SKILL.md) is
+not a lens: it runs five of them and reads only their header and summary line.
 
 ## Arguments
 
@@ -55,6 +56,8 @@ this produce findings that are locally reasonable and wrong in context.
 
 ## 4. Be exhaustive
 
+This is the first review of a change. Later rounds are scoped to what changed, per § 7.
+
 Both halves below are mandatory. Measured on a fixed ground truth, a reviewer without them
 found 2 of 20 known issues across 5 runs; with them, 7 of 12 across 3 runs. The failure
 mode is not ignorance — it is satisficing. Left to its own judgement the model reports the
@@ -104,6 +107,12 @@ The same three levels everywhere. Each skill's own table says what fills them.
 | **Major** | Real cost that will be paid later. Fix before merge, or file a follow-up. |
 | **Minor** | Worth fixing, blocks nothing. |
 
+**The bar for Major.** A Major names who pays and when: a user who gets a wrong answer or
+loses what they typed, or the next change that will have to work around this one. Each
+lens's table says what meets that bar for it. Without the bar, a reviewer resumed round
+after round always finds one more thing that could be tightened, and the fix loop never
+converges.
+
 ## 6. Report
 
 Each skill writes a Markdown file under `reviews/` (`reviews/code-review-issues.md`,
@@ -146,6 +155,45 @@ it is about and say so.
 
 Close with a summary line: `X Critical, Y Major, Z Minor` and a one-paragraph verdict.
 
+## 7. Later rounds: plan review and verification
+
+After the first review, `review-all` resumes the same reviewer up to twice per fix loop,
+and only a reviewer that reported a Critical or Major; a clean lens is not resumed. The
+reviewer keeps its context, so it remembers its findings. It does **not** review the
+change again from scratch; § 4 does not apply.
+
+Why: re-running five fresh exhaustive reviewers on every new head was measured on one PR
+at nine rounds. Majors levelled off at 3–6 a round and never reached zero; the fixes kept
+adding code to review, and in round 9 a new reviewer asked to undo what the round-7 one
+had asked for. A fresh reviewer knows nothing of what was decided, so it reopens it.
+
+Before answering, read the history — the context every reviewer shares and that grows by
+one round at a time: every lens's report from every round in `reviews/rounds/`, and the
+orchestrator's conclusions in `reviews/decisions.md`. A reviewer that sees only its own
+report re-raises what another lens already settled.
+
+**Plan review** — you are sent `reviews/fix-plan.md`. For each line about one of your
+findings, answer *agree* or *object: <why>*, where the reason is a consequence, not a
+preference. Read the other lenses' lines too, and flag any that would undo one of your
+findings or break a rule your lens enforces. Do not raise new findings here. Reply with
+the answers only; write no report.
+
+**Verification** — you are sent a new compare SHA, the previous one, and a worktree.
+Review `git diff <previous>..<new>` and the code it touches, nothing else. Rewrite your
+report for the new SHA (§ 6 shape), with:
+
+- each earlier Critical or Major marked *resolved* (with where) or *open* (with why —
+  judged against the finding, not against whether the plan was followed);
+- new findings only on lines the change touched. A new Major must be a regression the
+  fix introduced;
+- anything else you notice goes under **Outside the change**, as a follow-up with no
+  severity, and does not count in the summary line.
+
+Never reopen a decision in `reviews/decisions.md`: a *won't fix*, a deferral, a settled
+conflict, or the approach a *fix* line agreed. Whether a fix worked is not a decision;
+judge it as above. If you think a decision is wrong, say so under **Outside the change**,
+for the user. The summary line counts only open and new findings.
+
 ## Rules that apply to every reviewer
 
 - **Report findings, do not fix them.** These skills are read-only. Fixing is a separate,
@@ -177,11 +225,14 @@ Close with a summary line: `X Critical, Y Major, Z Minor` and a one-paragraph ve
 | [`review-impact`](../skills/review-impact/SKILL.md) | Blast radius; which suites must pass | `reviews/impact-analysis.md` |
 | [`review-slop`](../skills/review-slop/SKILL.md) | Correct work that shouldn't be in the diff: verbosity, duplication, ceremony, misplaced checks | `reviews/slop-review-issues.md` |
 
-**Which to run:** `review-pr` alone for a small change. For anything substantial, the
-focused passes find more than the catch-all does — they are cheap to run in parallel.
-`review-impact` is the one to run *before* pushing rather than after. `review-slop` earns
-its place on a diff heavy in docs, config, CI or deploy plumbing, where the other lenses
-have little to say.
+**Which to run:** `review-pr` alone for a small change. For anything substantial,
+[`review-all`](../skills/review-all/SKILL.md) runs the five verdict lenses — complexity,
+testing, architecture, security, slop — in parallel on one pinned commit, one subagent
+each, summarises them in `reviews/review-summary.md`, and runs the fix loop of § 7. The
+focused passes find more than the catch-all does. `review-impact` is the one to run
+*before* pushing rather than after; a single lens by hand is for iterating on one kind of
+finding. `review-slop` earns its place on a diff heavy in docs, config, CI or deploy
+plumbing, where the other lenses have little to say.
 
 What no reviewer here can see is a consequence outside the diff that nobody touched —
 [`review-drift`](../skills/review-drift/SKILL.md) runs after merges for that, and does not

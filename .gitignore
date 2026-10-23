@@ -4,3 +4,4 @@
 
 # Review reports: about one commit, stale the moment the branch moves (docs/review-protocol.md § 6)
 reviews/
+__pycache__/

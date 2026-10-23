@@ -73,9 +73,9 @@ feature. Never fall back to a title-less create and treat a failure as "nothing 
 
 If this run created the PR, or pushed a fresh commit since it started, tell the user once:
 
-> "PR #{pr_id}: consider running the review skills locally now (`review-pr`,
-> `review-complexity`, `review-testing`, and whichever focused lenses fit) — faster
-> feedback than waiting for CI or a human."
+> "PR #{pr_id}: consider running `review-all` locally now — the five focused lenses in
+> parallel, posted to the PR, then a fix loop that converges — or `review-pr` alone if the
+> change is small. Faster feedback than waiting for CI or a human."
 
 At most **once per PR per run**, tracked in the agent's own state, not in git. It is
 advisory: do not wait for an answer, and do not launch the reviewers yourself — they are a
