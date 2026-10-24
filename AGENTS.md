@@ -55,7 +55,9 @@ changing behaviour, guided by
 the refactor agent aim at is stated in [`docs/code-design-rules.md`](docs/code-design-rules.md)
 (inside a type or function) and
 [`docs/hexagonal-architecture-rules.md`](docs/hexagonal-architecture-rules.md) (where code
-goes).
+goes). [`skills/port-refactoring`](skills/port-refactoring/SKILL.md) designs the port an adapter
+to an external service should become, following
+[`docs/port-refactoring-method.md`](docs/port-refactoring-method.md).
 
 **Landing it.** [`agents/merger`](agents/merger.md) owns the merge lifecycle.
 [`skills/azure-devops-pr`](skills/azure-devops-pr/SKILL.md) is the Azure DevOps
