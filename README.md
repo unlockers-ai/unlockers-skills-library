@@ -46,8 +46,15 @@ skill below adds a single lens. They are read-only: they report, they do not fix
 | [`review-impact`](skills/review-impact/SKILL.md) | Blast radius; which suites must pass — run this *before* pushing | `reviews/impact-analysis.md` |
 | [`review-slop`](skills/review-slop/SKILL.md) | Correct work that shouldn't be in the diff — verbose prose, duplication across siblings, ceremony, checks in the wrong layer | `reviews/slop-review-issues.md` |
 
-`review-pr` alone is enough for a small change. For anything substantial the focused passes
-find more than the catch-all does, and they run in parallel. `review-slop` is for diffs heavy
+[`review-all`](skills/review-all/SKILL.md) is not a lens but the orchestrator: it runs the five
+verdict lenses (complexity, testing, architecture, security, slop) as parallel subagents on
+one pinned commit, writes `reviews/review-summary.md`, posts it to the PR with one commit
+status per lens, and then runs a fix loop in which the *same* reviewers approve the plan and
+verify the fix — reading one shared history of every round's reports and decisions, so they
+converge instead of reopening what was settled. Ships its own script.
+
+`review-pr` alone is enough for a small change. For anything substantial, `review-all`: the
+focused passes find more than the catch-all does, and they run in parallel. `review-slop` is for diffs heavy
 in docs, config, CI or deploy plumbing, where the other lenses have little to say.
 
 ### Other skills
@@ -68,7 +75,7 @@ in docs, config, CI or deploy plumbing, where the other lenses have little to sa
 
 | Doc | Referenced by |
 |-----|----------------|
-| [`review-protocol.md`](docs/review-protocol.md) | every `review-*` skill |
+| [`review-protocol.md`](docs/review-protocol.md) | every `review-*` skill, `review-all` |
 | [`testing-rules.md`](docs/testing-rules.md) | `write-tests`, `review-testing` |
 | [`testing-review-guide.md`](docs/testing-review-guide.md) | `review-testing` |
 | [`adapter-contract-testing.md`](docs/adapter-contract-testing.md) | `adapter-contract-testing`, port refactoring method |
@@ -117,7 +124,7 @@ want the skills without the agents.
 
 **By hand** — copy a directory from `skills/` into `.claude/skills/`, `.opencode/skills/`,
 `.github/skills/` or `.agents/skills/`. Copy the whole directory: some skills
-(`quality-gate`, `azure-devops-pr`, `review-drift`) ship scripts and config next to `SKILL.md`.
+(`quality-gate`, `azure-devops-pr`, `review-drift`, `review-all`) ship scripts and config next to `SKILL.md`.
 
 **Agents** are not part of the Agent Skills format, so each client has its own place for them.
 The files in `agents/` carry frontmatter for both Claude Code and OpenCode:

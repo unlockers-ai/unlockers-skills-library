@@ -8,7 +8,7 @@ description: Capture a feature request as a very short PRD, then challenge it fo
 A small codebase is always easier to change than a large one. Every functional request is
 therefore challenged on its simplicity **before** implementation, not after.
 
-This runs at the front of [`docs/feature-workflow.md`](../../docs/feature-workflow.md): it
+This runs at the front of [`feature-workflow.md`](references/feature-workflow.md): it
 questions *what* is being built, then hands the agreed scope to the workflow, whose step 2
 slices *how* it gets delivered. Challenge the scope first — slicing a request that should
 have been half its size just produces more slices.

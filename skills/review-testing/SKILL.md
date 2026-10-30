@@ -50,25 +50,40 @@ Its § 4 *Be exhaustive* is mandatory; the lens steps it refers to are steps 3�
 ```markdown
 # Testing Review: {branch-name}
 
-## Violations
+**Compare:** {sha} ({ref})  ·  **Base:** {sha} ({ref})  ·  **Merge base:** {sha}
 
-### {test_file}
-- **Line {N}**: {violation description}
+## Critical
+### {N}. {title}
+**Location:** {test_file}:{line}
+**Issue:** …
 
-## Missing Coverage
+## Major
+### {N}. {title}
+…
+
+### Missing coverage
 
 | Production File | Untested Code |
 |-----------------|---------------|
 | path/to/file    | `function_name()`, `ClassName.method()` |
 
+## Minor
+…
+
 ## Positive Observations
 - {What was done well}
 
 ## Summary
-- {X} violations found
-- {Y} untested code paths
-- Overall assessment
+{X} Critical, {Y} Major, {Z} Minor — overall assessment
 ```
+
+Severity, per the protocol: **Critical** — a test that cannot fail, reaches the network,
+or asserts nothing about the change; **Major** — a rule of
+[`testing-rules.md`](references/testing-rules.md) broken, or a changed code path with no
+test when that path carries a business rule, a security guard or error handling that
+keeps or loses user data; **Minor** — naming, size or structure, and any other untested
+branch or surviving mutation. Without this bar the testing lens found new Majors on every
+one of nine rounds of one PR: there is always one more thing that could be pinned.
 
 ## Example Usage
 
