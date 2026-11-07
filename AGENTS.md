@@ -77,6 +77,10 @@ elsewhere, the third workaround for one root cause, the rule written down and ap
 — and files what it finds as issues. The gate sees that a file got too big; the drift
 review sees why, and where else the same thing is happening.
 
+**Prototypes.** Skills marked `status: prototype` in their frontmatter are unproven and
+may change or be removed. [`skills/teams-local-messages`](skills/teams-local-messages/SKILL.md)
+reads and recaps Teams conversations from the local cache (macOS, new Teams).
+
 ## Conventions for content
 
 - **Examples are Python. The rules are not.** Do not expand an example into five languages —

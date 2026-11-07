@@ -69,6 +69,7 @@ in docs, config, CI or deploy plumbing, where the other lenses have little to sa
 | [`review-drift`](skills/review-drift/SKILL.md) | After merges, what the *rest* of the codebase now owes: duplication, an idea that should spread, a rule stated but unapplied. Nightly runner and GitHub issue publisher included; CodeScene optional. |
 | [`quality-gate`](skills/quality-gate/SKILL.md) | Objective thresholds as a backstop for when review nudges don't land. Final CI stage, Claude Code hook, or both. |
 | [`azure-devops-pr`](skills/azure-devops-pr/SKILL.md) | **Azure DevOps only.** Create a PR; review threads, replies, follow-up work items, auto-complete. Ships its own scripts. |
+| [`teams-local-messages`](skills/teams-local-messages/SKILL.md) | **Prototype, macOS + new Teams only.** Read and recap Teams conversations from the local IndexedDB cache, no Graph API. Ships its own script. |
 
 ### Docs
 
